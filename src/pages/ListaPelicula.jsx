@@ -1,70 +1,37 @@
 import PeliculaContenedor from "../components/PeliculaContenedor"
 import PeliculaFormulario from "../components/PeliculaFormulario"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import useSearchMovie from "../hooks/useSearchMovie"
 
 const ListaPelicula = () => {
 
-  const API_URL = 'https://api.themoviedb.org/3/'
-
-  const [movies, setMovies] = useState({
-    movies: [],
-    loading: false,
-    error: null,
-  })
-
-  const [search, setSearch] = useState()
-
-  const getMovies = async () => {
-    setMovies({
-      movies: [],
-      loading: true,
-      error: null,
-    })
-
-    try {
-      if(search === undefined || search === ''){
-        const response = await fetch(`${API_URL}movie/popular?api_key=${import.meta.env.VITE_API_KEY}`)
-        const data = await response.json()
-        console.log("asdsadasdasdasdsd")
-        setMovies({
-          movies: data.results,
-          loading: false,
-          error: null,
-        })
-        return
-      }
-      const response = await fetch(`${API_URL}search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${search}`)
-      const data = await response.json()
-      console.log(data)
-      if(data.results.length === 0) throw new Error('No se encontraron resultados')
-        setMovies({
-          movies: data.results,
-          loading: false,
-          error: null,
-        })
-    } catch (error) {
-      setMovies({
-        movies: [],
-        loading: false,
-        error: error,
-      })
-    }
-  }
+  const { movies, isMovie, search, setSearch, setIsMovie, fecthMovie } = useSearchMovie()
 
   useEffect(()=>{
-    getMovies()
-  },[search])
+    fecthMovie(search, isMovie)
+  },[isMovie, search])
 
-  const handleSearch = (search) => {
-    setSearch(search)
+  const ChangeToPelicula = () => {
+    setIsMovie(true)
   }
-  
+
+  const ChangeToSerie = () => {
+    setIsMovie(false)
+  }
 
   return (
     <div>
-      <h1>Lista de Peliculas</h1>
-      <PeliculaFormulario handleSearch={handleSearch} />
-      
+      <h1>Lista de {isMovie ? 'Peliculas' : 'Series de TV' } </h1>
+      <div className="center">
+        <button
+          style={{backgroundColor: isMovie ? 'blue' : 'red'}}
+          onClick={ChangeToPelicula}>Peliculas</button>
+        <button 
+          style={{backgroundColor: isMovie ? 'red' : 'blue'}}
+          onClick={ChangeToSerie}>Series
+        </button>
+      </div>
+      <PeliculaFormulario setSearch={setSearch} />
       {movies.error ? <p>{movies.error.message}</p> : <PeliculaContenedor movies = {movies}  />}
     </div>
   )

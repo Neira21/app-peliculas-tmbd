@@ -2,7 +2,7 @@ import useForm from '../hooks/useForm'
 import { BiSolidSearch } from "react-icons/bi";
 
 
-const PeliculaFormulario = ({handleSearch}) => {
+const PeliculaFormulario = ({setSearch}) => {
   
   const initialState = {
     search: ''
@@ -12,7 +12,7 @@ const PeliculaFormulario = ({handleSearch}) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    handleSearch(search)
+    setSearch(search)
   }
 
   return (

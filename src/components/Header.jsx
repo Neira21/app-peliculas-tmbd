@@ -15,7 +15,12 @@ const Header = () => {
           <Link to='/peliculalista'>
             Peliculas
           </Link>
-          </li>
+        </li>
+        <li>
+          <Link to='/peliculalista'>
+            Valoración de películas
+          </Link>
+        </li>
       </ul>
     </header>
   )
