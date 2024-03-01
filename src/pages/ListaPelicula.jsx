@@ -9,6 +9,7 @@ const ListaPelicula = () => {
 
   useEffect(()=>{
     fecthMovie(search, isMovie)
+    console.log("isMovie es ", isMovie)
   },[isMovie, search])
 
   const ChangeToPelicula = () => {
@@ -32,7 +33,7 @@ const ListaPelicula = () => {
         </button>
       </div>
       <PeliculaFormulario setSearch={setSearch} />
-      {movies.error ? <p>{movies.error.message}</p> : <PeliculaContenedor movies = {movies}  />}
+      {movies.error ? <p>{movies.error.message}</p> : <PeliculaContenedor isMovie={isMovie}  movies = {movies}  />}
     </div>
   )
 }
