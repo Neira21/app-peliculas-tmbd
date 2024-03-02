@@ -33,7 +33,7 @@ const Pelicula = ({movie, isMovie}) => {
       <p>{movieText}</p>
       <button onClick={handleModal}>Agregar Calificación</button>
       {modal 
-        ? <Modal movie={movie} handleModal={handleModal}/>
+        ? <Modal movie={movie} isMovie={isMovie} handleModal={handleModal}/>
         : null 
       }
     </div>

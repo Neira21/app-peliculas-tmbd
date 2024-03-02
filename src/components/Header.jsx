@@ -17,7 +17,7 @@ const Header = () => {
           </Link>
         </li>
         <li>
-          <Link to='/peliculalista'>
+          <Link to='/peliculasvaloradas'>
             Valoración de películas
           </Link>
         </li>
