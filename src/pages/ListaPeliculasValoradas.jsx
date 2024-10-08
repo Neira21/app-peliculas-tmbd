@@ -36,16 +36,21 @@ const ListaPeliculasValoradas = () => {
   const ObtenerPeliculasRated = async () => {
     const type = isMovie ? 'movies' : 'tv'
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/account/13007389/rated/${type}?api_key=${import.meta.env.VITE_API_KEY}`,{
+      const response = await fetch(`${import.meta.env.VITE_API_URL}account/13007389/rated/${type}?api_key=${import.meta.env.VITE_API_KEY}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM'
         }
       })
+
+      if(response.status !== 200){
+        return console.log('Error del servidor')
+      }
+
       const data = await response.json()
-      console.log(data)
       setMovies(data.results)  
+
     } catch (error) {
       console.log(error)
     }

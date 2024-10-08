@@ -1,14 +1,22 @@
-import React from 'react'
 import useForm from '../hooks/useForm'
-
 import style from './Modal.module.css'
 
+//importar proptypes
+import PropTypes from 'prop-types'
+
+
+
 const Modal = ({movie, isMovie, handleModal}) => {
+
+  Modal.propTypes = {
+    movie: PropTypes.object.isRequired,
+    isMovie: PropTypes.bool.isRequired,
+    handleModal: PropTypes.func.isRequired
+  }
 
   const {calificacion, inputChange} = useForm({ calificacion: '' })
 
   const handleSubmit = (e) => {
-    console.log(calificacion)
     e.preventDefault()
     agregarCalificacion()
     handleModal()
@@ -17,7 +25,7 @@ const Modal = ({movie, isMovie, handleModal}) => {
   const agregarCalificacion = async () => {
 
     if(isMovie){
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}movie/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM',
@@ -27,9 +35,8 @@ const Modal = ({movie, isMovie, handleModal}) => {
           value: calificacion
         })
       })
-      console.log(response)
     } else {
-      const response = await fetch(`https://api.themoviedb.org/3/tv/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}tv/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM',
@@ -39,7 +46,6 @@ const Modal = ({movie, isMovie, handleModal}) => {
           value: calificacion
         })
       })
-    console.log(response)
     }
   }
 
@@ -54,7 +60,7 @@ const Modal = ({movie, isMovie, handleModal}) => {
         </div>
 
         <div className={style.modal_imagen}>
-          <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />          
+          <img src={`${import.meta.env.VITE_IMAGE_URL}${movie.poster_path}`} alt={movie.title} />          
         </div>
 
         <p>Agregar Calificación (0 - 10)</p> 

@@ -1,8 +1,14 @@
-import React from 'react'
+import notFound from '../assets/notfound.webp'
 
 const Error = () => {
   return (
-    <div>PÁGINA NO ENCONTRADA</div>
+    <div className='not-found'>
+      <h2>PAGE NOT FOUND</h2>
+      <div>
+        <img src={notFound} alt="notfound" />
+      </div>
+      
+    </div>
   )
 }
 

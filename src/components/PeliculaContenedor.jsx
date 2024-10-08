@@ -1,7 +1,16 @@
 import Pelicula from "./Pelicula"
 import Loading from "./Loading";
+import Proptypes from 'prop-types';
 
 const PeliculaContenedor = ({movies, isMovie}) => {
+  PeliculaContenedor.propTypes = {
+    movies: Proptypes.shape({
+      loading: Proptypes.bool.isRequired,
+      movies: Proptypes.array.isRequired,
+      error: Proptypes.object
+    }).isRequired,
+    isMovie: Proptypes.bool.isRequired
+  }
   return (
     <div className="movie-list">
       {

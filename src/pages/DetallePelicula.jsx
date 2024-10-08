@@ -2,6 +2,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 import PeliculaDetalle from '../components/PeliculaDetalle'
+import { getMoviesOrSeries } from '../utils/queryMovies.js'
 
 const DetallePelicula = () => {
   
@@ -10,13 +11,12 @@ const DetallePelicula = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [data, setData] = useState([{}])
+  const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   
   const getMovie = async (id) => {
     setLoading(true)
-    const response = await fetch(`https://api.themoviedb.org/3/${tipo}/${id}?api_key=${import.meta.env.VITE_API_KEY}`)
-    const data = await response.json()
+    const data = await getMoviesOrSeries(`${tipo}/${id}`)
     setData(data)
     setLoading(false)
   }

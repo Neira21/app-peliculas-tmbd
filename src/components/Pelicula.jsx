@@ -1,9 +1,14 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import noImage from '../assets/noimagen.png'
 import { useState } from "react"
 import Modal from "./Modal"
+import PropTypes from 'prop-types'
 
 const Pelicula = ({movie, isMovie}) => {
+  Pelicula.propTypes = {
+    movie: PropTypes.object.isRequired,
+    isMovie: PropTypes.bool.isRequired
+  }
 
   const [modal, setModal] = useState(false)
 
@@ -13,7 +18,7 @@ const Pelicula = ({movie, isMovie}) => {
 
   let movieText = ''
   let contadorPalabras = 10
-  const moviePoster = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : noImage
+  const moviePoster = movie.poster_path ? `${import.meta.env.VITE_IMAGE_URL}${movie.poster_path}` : noImage
 
   if(movie.overview.length > 15) {
     let palabras = movie.overview.split(' ')
@@ -26,7 +31,6 @@ const Pelicula = ({movie, isMovie}) => {
   return (
     <div className="movie-card" key={movie.id}>
       {movie.title === undefined ? <h2>{movie.name}</h2> : <h2>{movie.title}</h2>}
-      {/* <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} /> */}
       <Link to={`/peliculadetalle/${movie.id}?ismovie=${isMovie}`}>
         <img src={moviePoster} alt={movie.title} />
       </Link>

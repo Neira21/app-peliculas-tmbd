@@ -1,8 +1,13 @@
 import useForm from '../hooks/useForm'
 import { BiSolidSearch } from "react-icons/bi";
+import PropTypes from 'prop-types'
+import { useEffect } from 'react';
 
 
 const PeliculaFormulario = ({setSearch}) => {
+  PeliculaFormulario.propTypes = {
+    setSearch: PropTypes.func.isRequired
+  }
   
   const initialState = {
     search: ''
@@ -10,13 +15,13 @@ const PeliculaFormulario = ({setSearch}) => {
 
   const {search, formState, inputChange } = useForm(initialState)
 
-  const onSubmit = (e) => {
-    e.preventDefault()
-    setSearch(search)
-  }
+  
+  useEffect(()=>{
+    setSearch(formState.search)
+  },[formState])
 
   return (
-    <form onSubmit={onSubmit} >
+    <form >
       <input 
         type="text" 
         name='search'

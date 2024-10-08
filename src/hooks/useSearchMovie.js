@@ -1,7 +1,11 @@
 import { useState } from "react"
 
+// hook para buscar películas o series de TV
+// Si no se pasa un valor de búsqueda, se obtienen todas las películas o series de TV mediante DISCOVER
+
 const useSearchMovie = ( ) => {
-  const API_URL = 'https://api.themoviedb.org/3/'
+
+  const API_URL = import.meta.env.VITE_API_URL
   const [movies, setMovies] = useState({
     movies: [],
     loading: false,
@@ -12,7 +16,6 @@ const useSearchMovie = ( ) => {
   const [search, setSearch] = useState()
 
   const fecthMovie = async (search, isMovie ) => {
-    console.log("Haciendo Fecth")
     setMovies({
       movies: [],
       loading: true,
@@ -23,7 +26,6 @@ const useSearchMovie = ( ) => {
       const movieOrTv = isMovie ? 'movie' : 'tv'
       const response = await fetch(`${API_URL}${type}/${movieOrTv}?api_key=${import.meta.env.VITE_API_KEY}&query=${search}`)
       const data = await response.json()
-      console.log(data)
       setMovies({
         movies: data.results,
         loading: false,
