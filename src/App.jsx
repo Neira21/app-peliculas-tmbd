@@ -11,7 +11,7 @@ const App = () => {
     <>
       <Header/>
       <Routes>
-        <Route path='/' element={<Inicio/>} />
+        <Route index path='/' element={<Inicio/>} />
         <Route path='/peliculalista' element={<ListaPelicula/>} />
         <Route path='/peliculadetalle/:id' element={<DetallePelicula/>} />
         <Route path='/peliculasvaloradas' element={<ListaPeliculasValoradas/>} />

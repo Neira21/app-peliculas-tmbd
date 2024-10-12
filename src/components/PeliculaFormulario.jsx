@@ -15,13 +15,16 @@ const PeliculaFormulario = ({setSearch}) => {
 
   const {search, formState, inputChange } = useForm(initialState)
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
   
   useEffect(()=>{
     setSearch(formState.search)
   },[formState])
 
   return (
-    <form >
+    <form onSubmit={handleSubmit} >
       <input 
         type="text" 
         name='search'

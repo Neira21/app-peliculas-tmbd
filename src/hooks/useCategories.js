@@ -5,18 +5,18 @@ import { getMoviesOrSeries } from "../utils/queryMovies"
 
 const useTrending = () => {
 
-  const [trendingMovies, setTrendingMovies] = useState([])
-  const [trendingTvs, setTrendingTvs] = useState([])
+  const [categoriesMovies, setCategoriesMovies] = useState([])
+  const [categoriesTvs, setCategoriesTvs] = useState([])
 
   const fetchTrending = async () => {
     try {
       // Si uno falla que ya no se ejecute el otro
       const [movies, tvs] = await Promise.all([
-        getMoviesOrSeries('/trending/movie/day'),
-        getMoviesOrSeries('/trending/tv/day')
+        getMoviesOrSeries('genre/movie/list?language=es-ES'),
+        getMoviesOrSeries('genre/tv/list?language=es-ES')
       ])
-      setTrendingMovies(movies)
-      setTrendingTvs(tvs)
+      setCategoriesMovies(movies.genres)
+      setCategoriesTvs(tvs.genres)
     } catch (error) {
       console.log(error)
     }
@@ -27,8 +27,8 @@ const useTrending = () => {
   }, [])
 
   return {
-    trendingMovies: trendingMovies.results,
-    trendingTvs: trendingTvs.results
+    categoriesMovies,
+    categoriesTvs
   }
 }
 

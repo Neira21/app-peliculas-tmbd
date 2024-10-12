@@ -1,0 +1,32 @@
+
+
+.categories_container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+}
+
+.category_card{
+  object-fit: cover;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.category_card:hover{
+  opacity: 0.8;
+  transition: 0.3s;
+  transform: scale(0.95);
+}
+
+.category_name{
+  color: black;
+  background-color: #E39D1B;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}

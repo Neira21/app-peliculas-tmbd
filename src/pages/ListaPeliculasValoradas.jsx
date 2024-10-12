@@ -1,123 +1,218 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { DataGrid } from '@mui/x-data-grid'
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
 
 const style = {
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '50px',
-    flexDirection: 'column',
-    marginTop: '20px',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "50px",
+    flexDirection: "column",
   },
   table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    border: '1px solid black',
+    borderCollapse: "collapse",
+    width: "100%",
+    border: "1px solid black",
   },
-}
+  header: {
+    backgroundColor: "#1976d2",
+    color: "white",
+  },
+};
+
+
 
 const ListaPeliculasValoradas = () => {
-  const [movies, setMovies] = useState([])
-  const [isMovie, setIsMovie] = useState(true)
+  const [movies, setMovies] = useState([]);
+  const [isMovie, setIsMovie] = useState(true);
 
-  const rows = isMovie ? movies.map((movie,index) => (
-      { id: index, col1: movie.title, col2: movie.rating }
-    )) : movies.map((movie,index) => (
-      { id: index, col1: movie.name, col2: movie.rating }
-    ))
-  
+  const rows = isMovie
+    ? movies.map((movie, index) => ({
+        id: index + 1,
+        idTruth: movie.id,
+        colImage: movie.poster_path,
+        col1: movie.title,
+        col2: movie.rating,
+      }))
+    : movies.map((movie, index) => ({
+        id: index + 1,
+        idTruth: movie.id,
+        colImage: movie.poster_path,
+        col1: movie.name,
+        col2: movie.rating,
+      }));
+
   const columns = [
-    { field: 'col1', headerName: 'Pelicula', width: 300 },
-    { field: 'col2', headerName: 'Valoración', width: 300 },
+    {
+      field: "id",
+      headerName: "ID",
+      renderCell: (params) => {
+        return <strong>{params.value}</strong>;
+      },
+    },
+    {
+      field: "colImage",
+      headerName: "Imagen",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${params.value}`}
+            alt="poster"
+            style={{ width: "100px", height: "100px" }}
+          />
+        );
+      },
+    },
+    {
+      field: "col1",
+      headerName: "Pelicula",
+      width: 300,
+      headerAlign: "center",
+    },
+    {
+      field: "col2",
+      headerName: "Valoración",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "accion",
+      headerName: "Acción",
+      width: 200,
+      headerAlign: "center",
+      renderCell: (params) => {
+        return (
+        <button
+          style={{ backgroundColor: "red", color: "white" }}
+          onClick={()=>handleDelete(params)}
+        >
+          Borrar
+        </button>
+        )
+      },
+      align: "center",
+    },
   ];
-  
-  const ObtenerPeliculasRated = async () => {
-    const type = isMovie ? 'movies' : 'tv'
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}account/13007389/rated/${type}?api_key=${import.meta.env.VITE_API_KEY}`,{
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM'
-        }
-      })
 
-      if(response.status !== 200){
-        return console.log('Error del servidor')
+  const handleDelete = async (params) => {
+    const id = params.row.idTruth;
+    try {
+      const type = isMovie ? "movie" : "tv";
+      const response = await fetch(`${import.meta.env.VITE_API_URL}${type}/${id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM"
+        },
+      });
+
+      if (response.ok) {
+        // Si el borrado es exitoso, actualiza el estado
+        setMovies((prevMovies) => prevMovies.filter((movie) => movie.id !== id));
+      } else {
+        console.error("Error al borrar la película");
+      }
+    } catch (error) {
+      console.error("Error de conexión:", error);
+    }
+  };
+
+
+  const ObtenerPeliculasRated = async () => {
+    const type = isMovie ? "movies" : "tv";
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }account/13007389/rated/${type}?api_key=${
+          import.meta.env.VITE_API_KEY
+        }`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        return console.log("Error del servidor");
       }
 
-      const data = await response.json()
-      setMovies(data.results)  
-
+      const data = await response.json();
+      setMovies(data.results);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const ChangeToPelicula = () => {
-    setIsMovie(true)
-  }
+    setIsMovie(true);
+  };
 
   const ChangeToSerie = () => {
-    setIsMovie(false)
-  }
+    setIsMovie(false);
+  };
 
-  useEffect(()=>{
-    ObtenerPeliculasRated()
-  },[isMovie])
+  useEffect(() => {
+    ObtenerPeliculasRated();
+  }, [isMovie]);
 
   return (
     <div style={style.container}>
-      <Link to='/' style={{textAlign:'center', textDecoration:'none'}}>
-        <button style={{color:'white', cursor: 'pointer'}}>Ir al inicio</button>
+      <Link to="/" style={{ textAlign: "center", textDecoration: "none" }}>
+        <button style={{ color: "white", cursor: "pointer" }}>
+          Ir al inicio
+        </button>
       </Link>
       <div className="center">
+        {isMovie ? <h1>Peliculas</h1> : <h1>Series</h1>}
         <button
-          style={{backgroundColor: isMovie ? 'blue' : 'red'}}
-          onClick={ChangeToPelicula}>Peliculas</button>
-        <button 
-          style={{backgroundColor: isMovie ? 'red' : 'blue'}}
-          onClick={ChangeToSerie}>Series
+          style={{ backgroundColor: isMovie ? "blue" : "red" }}
+          onClick={ChangeToPelicula}
+        >
+          Peliculas
+        </button>
+        <button
+          style={{ backgroundColor: isMovie ? "red" : "blue" }}
+          onClick={ChangeToSerie}
+        >
+          Series
         </button>
       </div>
-      
 
-      <DataGrid
-        rows = {rows}
-        columns={columns}
-        pageSize={7}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-          autoPageSize: true,
-        }}
-        pageSizeOptions={[5, 10]}
-      />
-
-
-      {/* <table style={style.table} >
-        <thead>
-          <tr>
-            <th>Titulo</th>
-            <th>Valoración</th>
-          </tr>
-        </thead>
-        <tbody>
-          {movies.map((movie,index) => (
-            <tr key={index}>
-              <td>{movie.title}</td>
-              <td>{movie.rating}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
+      <Paper sx={{ height: 500, width: "95%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              pageSize: 8,
+              page: 1,
+            },
+          }}
+          
+          pagination
+          rowHeight={120}
+          sx={{
+            border: 0,
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: style.header.backgroundColor, // Estilo para el encabezado
+              color: style.header.color, // Color del texto del encabezado
+            },
+          }}
+        />
+      </Paper>
     </div>
-  )
-}
+  );
+};
 
 //npm install @mui/icons-material
 
-export default ListaPeliculasValoradas
+export default ListaPeliculasValoradas;
