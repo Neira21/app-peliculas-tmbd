@@ -3,17 +3,20 @@ import Loading from "./Loading";
 import PropTypes from "prop-types";
 import style from "./PeliculaDetalle.module.css";
 import YouTube from "react-youtube";
+import { Link } from "react-router-dom";
 
-const PeliculaDetalle = ({ data, loading, tipo, trailer }) => {
+const PeliculaDetalle = ({ data, loading, tipo, trailer, similar }) => {
+
   useEffect(()=>{
-    console.log('PeliculaDetalle se ha montado', data)
-  },[data])
+    console.log('PeliculaDetalle se ha montado', similar)
+  },[similar])
 
   PeliculaDetalle.propTypes = {
     data: PropTypes.object,
     loading: PropTypes.bool,
     tipo: PropTypes.string,
     trailer: PropTypes.string,
+    similar: PropTypes.array,
   };
 
   return (
@@ -28,13 +31,14 @@ const PeliculaDetalle = ({ data, loading, tipo, trailer }) => {
             <h2>{tipo === "movie" ? data.title : data.name}</h2>
 
             <img
-              src={`${import.meta.env.VITE_IMAGE_URL}${data.backdrop_path}`}
+              src={`${import.meta.env.VITE_IMAGE_URL_500}${data.backdrop_path}`}
               alt={data.title}
+              className={style.movie_detail_img}
             />
             <p className="center">{data.overview}</p>
             <YouTube
               videoId={trailer}
-              
+              autoplay={false}
               opts={{
                 height: "390",
                 width: "640",
@@ -45,14 +49,31 @@ const PeliculaDetalle = ({ data, loading, tipo, trailer }) => {
               
             />
             
-
             <h2>Géneros</h2>
-            <ul className={style.movie_detail_genres}>
+            <div className={style.movie_detail_genres}>
               {data.genres?.map((genre) => (
-                <li className={style.movie_detail_genres_item} key={genre.id}>{genre.name}</li>
+                <div className={style.movie_detail_genres_item} key={genre.id}>{genre.name}</div>
               ))}
-            </ul>
+            </div>
+            {tipo === 'movie' ? <h2>Películas similares</h2> : <h2>Series similares</h2>}
+            <div className={style.movie_detail_similar}>
+                <div className={style.movie_detail_similar_list}>
+                  {similar.map((movie) => (
+                    <div className={style.movie_detail_similar_item} key={movie.id}>
+                      <Link to={`/peliculadetalle/${movie.id}?ismovie=${tipo}`}>
+                        <img
+                          src={`${import.meta.env.VITE_IMAGE_URL}${movie.poster_path}`}
+                          alt={movie.title}
+                        />
+                      </Link>
+                      <p>{tipo === "movie" ? movie.title : movie.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
           </div>
+
+          
         </>
       )}
     </div>
