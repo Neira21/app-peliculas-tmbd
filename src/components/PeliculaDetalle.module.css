@@ -21,7 +21,7 @@
 
 .movie_detail_genres{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 80%;
   flex-wrap: wrap;
   gap: 10px;
