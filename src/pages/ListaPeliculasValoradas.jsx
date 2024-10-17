@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 
 const style = {
   container: {
+    paddingTop: "50px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

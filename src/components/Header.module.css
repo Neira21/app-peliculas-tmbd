@@ -1,10 +1,15 @@
 .header{
   background-color: #333;
   color: #fff;
-  padding: 10px 0;
+  padding: 1px;;
+  /*fixed*/
+  position: fixed;
+  z-index: 100;
+  width: 100%;
 }
 
 .navbar{
+  padding: 10px 10px;
   display: flex;
   gap: 20px;
 }

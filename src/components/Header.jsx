@@ -16,6 +16,11 @@ const Header = () => {
           </Link>
         </li>
         <li>
+          <Link to='/tvlista'>
+            Series
+          </Link>
+        </li>
+        <li>
           <Link to='/peliculasvaloradas'>
             Valoración de películas
           </Link>

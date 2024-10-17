@@ -1,17 +1,21 @@
 /* Estilos generales */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   /* degradado */
   background: linear-gradient(270deg, rgba(1, 233, 250, 0.9) 0%, rgba(0, 12, 246, 0.591) 100%);
-  
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.seleccionado{
+  background-color: red;
+  color: white;
 }
 
 h1 {
@@ -48,13 +52,49 @@ button:hover {
   background-color: #0056b3;
 }
 
-.movie-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+.container{
+  display: flex;
+  width: 100%;
+}
+
+.container-categories{
+  padding-top: 70px;
+  overflow-y: auto;
+  width: 15%;
+  height: 100vh; /* Fijar la altura al 100% de la ventana */
+  position: sticky; /* Fijar el contenedor al hacer scroll */
+  top: 0; /* Mantiene el contenedor fijo en la parte superior */
+}
+
+.container-list{
+  padding-top: 70px;
+  overflow-y: auto;
+  width: 85%;
+  /* espacio restante del 100vh */
+  height: 90%;
+  
+}
+
+.container-categories::-webkit-scrollbar {
+  display: none; /* Ocultar barra de scroll en Chrome, Safari y Edge */
+}
+
+.container-load-more{
+  margin: auto;
+}
+
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
-.movie-card {
+.card {
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
   padding: 20px;
   border-radius: 4px;
@@ -63,25 +103,26 @@ button:hover {
   text-align: center;
 }
 
-.movie-card img {
-  width: 100%;
-  height: auto;
+.card img {
+  width: 200px;
+  height: 250px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 
-.movie-card img:hover {
+.card img:hover {
   opacity: 0.8;
   transition: 0.3s;
   transform: scale(0.95);
 }
 
-.movie-card h2 {
+.card h2 {
+  max-width: 200px;
   font-size: 18px;
   margin-bottom: 5px;
 }
 
-.movie-card p {
+.card p {
   margin-bottom: 5px;
 }
 
@@ -134,15 +175,11 @@ button:hover {
     padding: 8px 16px;
   }
 
-  .movie-list {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-
-  .movie-card {
+  .card {
     padding: 10px;
   }
 
-  .movie-card h2 {
+  .card h2 {
     font-size: 16px;
   }
 

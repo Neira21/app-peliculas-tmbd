@@ -6,10 +6,10 @@ import PropTypes from 'prop-types'
 
 
 
-const Modal = ({movie, isMovie, handleModal}) => {
+const Modal = ({detalle, isMovie, handleModal}) => {
 
   Modal.propTypes = {
-    movie: PropTypes.object.isRequired,
+    detalle: PropTypes.object.isRequired,
     isMovie: PropTypes.bool.isRequired,
     handleModal: PropTypes.func.isRequired
   }
@@ -25,7 +25,7 @@ const Modal = ({movie, isMovie, handleModal}) => {
   const agregarCalificacion = async () => {
 
     if(isMovie){
-      await fetch(`${import.meta.env.VITE_API_URL}movie/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}movie/${detalle.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM',
@@ -36,7 +36,7 @@ const Modal = ({movie, isMovie, handleModal}) => {
         })
       })
     } else {
-      await fetch(`${import.meta.env.VITE_API_URL}tv/${movie.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}tv/${detalle.id}/rating?api_key=${import.meta.env.VITE_API_KEY}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODZlZTUyY2U2MGM5ZWJiMzgwNTEyN2RiNTNkN2Y2NyIsInN1YiI6IjYyYzBjYjE2NTMyYWNiMDMyOGQyNmY4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UbHOvXv3cT2bIHqz86uBHYGBj8VUyqB9PbCN477p9FM',
@@ -56,11 +56,11 @@ const Modal = ({movie, isMovie, handleModal}) => {
     <div className={style.modal}>
       <div className={style.modal_contenedor}>
         <div className={style.modal_header}>
-          <h2 className={style.modal_title}>{movie.title}</h2>
+          <h2 className={style.modal_title}>{detalle.title}</h2>
         </div>
 
         <div className={style.modal_imagen}>
-          <img src={`${import.meta.env.VITE_IMAGE_URL}${movie.poster_path}`} alt={movie.title} />          
+          <img src={`${import.meta.env.VITE_IMAGE_URL}${detalle.poster_path}`} alt={detalle.title} />          
         </div>
 
         <p>Agregar Calificación (0 - 10)</p> 

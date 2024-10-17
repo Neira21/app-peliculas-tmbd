@@ -4,16 +4,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  overflow-y: auto;
+  width: 100%;
 
 }
 
 .category_card{
-  object-fit: cover;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  width: 100%;
+  margin: 0 10px;
 }
 
 .category_card:hover{

@@ -3,15 +3,23 @@ import PropTypes from "prop-types";
 import style from "./PeliculaDetalle.module.css";
 import YouTube from "react-youtube";
 import { Link } from "react-router-dom";
+import Modal from "./Modal";
+import { useState } from "react";
 
-const PeliculaDetalle = ({ data, loading, tipo, trailer, similar }) => {
-  PeliculaDetalle.propTypes = {
+const Detalle = ({ data, loading, tipo, trailer, similar }) => {
+  Detalle.propTypes = {
     data: PropTypes.object,
     loading: PropTypes.bool,
     tipo: PropTypes.string,
     trailer: PropTypes.string,
     similar: PropTypes.array,
   };
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleModal = () => {
+    setModalShow(!modalShow);
+  }
 
   return (
     <div>
@@ -98,10 +106,14 @@ const PeliculaDetalle = ({ data, loading, tipo, trailer, similar }) => {
               </div>
             </div>
           </div>
+          <button onClick={handleModal}>Agregar Calificación</button>
+          {modalShow ? (
+            <Modal detalle={data} isMovie={tipo === "movie"} handleModal={handleModal} />
+          ) : null}
         </>
       )}
     </div>
   );
 };
 
-export default PeliculaDetalle;
+export default Detalle;

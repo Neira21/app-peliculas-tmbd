@@ -1,19 +1,22 @@
 import { useEffect, useCallback } from "react";
 import debounce from "just-debounce-it";
-import ListaContenedor from "../components/ListaContenedor";
 import PeliculaFormulario from "../components/PeliculaFormulario";
 import useSearchMovie from "../hooks/useSearchMovie";
 import { useLocation } from "react-router-dom";
+
 import useCategories from "../hooks/useCategories";
 import CategoriaContenedor from "../components/CategoriaContenedor";
+import ListaContenedor from "../components/ListaContenedor";
 
 const ListaPelicula = () => {
-  const { categoriesMovies } = useCategories();
+  const { categoriesTvs } = useCategories();
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   const isMovieParam = params.get("ismovie");
+  const isMovie = false;
+
   const genre = params.get("genre");
   const trendmovie =
     isMovieParam === "movietrend"
@@ -21,8 +24,6 @@ const ListaPelicula = () => {
       : isMovieParam === "tvtrend"
       ? false
       : undefined;
-
-  const isMovie = true;
 
   const { data, search, setSearch, fecthMovie, page, setPage } =
     useSearchMovie(trendmovie, genre);
@@ -32,7 +33,7 @@ const ListaPelicula = () => {
     debounce(() => {
       fecthMovie(search, isMovie, 1);
     }, 400), // Espera 400 ms antes de hacer la búsqueda
-    [search] // Solo se recrea si search o isMovie cambian
+    [search, isMovie] // Solo se recrea si search o isMovie cambian
   );
 
   useEffect(() => {
@@ -57,20 +58,26 @@ const ListaPelicula = () => {
   return (
     <div className="container">
       <div className="container-categories">
-        <CategoriaContenedor category={categoriesMovies} isMovie={isMovie} />
+        <CategoriaContenedor category={categoriesTvs} isMovie={isMovie} />
       </div>
       <div className="container-list">
         <PeliculaFormulario setSearch={setSearch} />
         <ListaContenedor isMovie={isMovie} data={data} />
         <div>
-          <button onClick={loadMoreMovies} style={{
+          <button 
+          onClick={loadMoreMovies}
+          style={{
             margin: 'auto',
+            marginTop:'20px',
+            padding: '20px',
             display: 'block',
           }}>Cargar más</button>
 
         </div>
+        
       </div>
     </div>
+    
   );
 };
 

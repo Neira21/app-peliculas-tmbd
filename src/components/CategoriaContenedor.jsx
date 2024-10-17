@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const CategoriaContenedor = ({category}) => {
+const CategoriaContenedor = ({ category, isMovie }) => {
   CategoriaContenedor.propTypes = {
     category: propTypes.arrayOf(
       propTypes.shape({
@@ -12,19 +12,22 @@ const CategoriaContenedor = ({category}) => {
         name: propTypes.string.isRequired,
       })
     ).isRequired,
+    isMovie: propTypes.bool.isRequired,
   };
 
   const navigate = useNavigate();
 
   const handleCategory = (id) => {
-    navigate(`/peliculalista?genre=${id}`);
+    isMovie
+      ? navigate(`/peliculalista?genre=${id}`)
+      : navigate(`/tvlista?genre=${id}`);
   }
 
  
 
   return (
     <section className={style.categories_container}>
-      
+        <h1>Géneros</h1>
         {category || category.length === 0 ? (
           category.map((category) => (
             <div className={style.category_card} key={category.id} onClick={()=>handleCategory(category.id)}>

@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import style from "./TrendingCards.module.css";
 import Loading from "./Loading";
+import { FaStar } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 const TrendingCard = ({ trending }) => {
   TrendingCard.propTypes = {
@@ -14,21 +14,12 @@ const TrendingCard = ({ trending }) => {
         name: PropTypes?.string,
         overview: PropTypes.string.isRequired,
         poster_path: PropTypes.string,
-        media_type: PropTypes.string.isRequired,
+        media_type: PropTypes.string,
       })
     ),
+    handleMovies: PropTypes.func,
+    handleTvs: PropTypes.func,
   };
-
-
-
-  //const isMovie = trending[0]?.media_type === "movie" ? true : false;
-
-  const navigate = useNavigate();
-
-  const handleTrend = () => {
-    const isMovie = trending[0]?.media_type === "movie" ? "movietrend" : "tvtrend";
-    navigate(`/peliculalista?ismovie=${isMovie}`, { replace: false });
-  }
 
   return (
     <>
@@ -38,36 +29,42 @@ const TrendingCard = ({ trending }) => {
         </div>
       ) : (
         <div>
-          <div className={style.header}>
-            {trending[0]?.media_type === "movie" ? (
-              <h1>Lo más popular en Películas</h1>
-            ) : (
-              <h1>Lo más popular en series de TV</h1>
-            )}
-            <button className={style.header_button} onClick={handleTrend} >Ver más</button>
-          </div>
-
           <div className={style.container_trending}>
             {trending.map((item) => {
-              const isMovie = item.media_type === "movie" ? true : false;
+              const isMovie = item.title ? true : false;
               return (
                 <div key={item.id} className={style.container_trending_card}>
                   {/* ?ismovie=${isMovie} */}
-                  <Link to={`/peliculadetalle/${item.id}?ismovie=${isMovie}`}
-                  >
-                  <img
-                    className={style.trending_card_img}
-                    src={`${import.meta.env.VITE_IMAGE_URL}${item.poster_path}`}
-                    alt={item.original_title || item.name}
-                  />
+                  <Link to={`/peliculadetalle/${item.id}?ismovie=${isMovie}`}>
+                    <img
+                      className={style.trending_card_img}
+                      src={`${import.meta.env.VITE_IMAGE_URL}${
+                        item.poster_path
+                      }`}
+                      alt={item.original_title || item.name}
+                    />
                   </Link>
 
-                  
                   <h3 className={style.trending_card_title}>
                     {item.original_title || item.name}
                   </h3>
+
+                  {/* valoracion */}
+
+                  <h4
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      columnGap: "10px",
+                    }}
+                  >
+                    <FaStar color="yellow" size={15} />
+                    {item.vote_average}
+                  </h4>
+                  <h5>{item.release_date || item.first_air_date}</h5>
                 </div>
-              )
+              );
             })}
           </div>
         </div>

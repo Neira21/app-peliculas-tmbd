@@ -34,12 +34,9 @@
 }
 
 .header{
-  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  
 }
 
 .container_trending_card {
@@ -50,7 +47,7 @@
   flex-direction: column;
   justify-content: center;
   padding-top: 20px;
-  padding: 10px 10px 0px 10px;
+  gap: 20px;
 }
 .trending_card_img{
   border-radius: 20px;
@@ -70,7 +67,7 @@
   
   font-weight: 600;
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   background-color: black;
   border-radius: 20px;
   height: 100%;

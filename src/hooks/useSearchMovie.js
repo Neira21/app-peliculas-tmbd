@@ -4,14 +4,11 @@ import { getMoviesOrSeries } from "../utils/queryMovies";
 // Si no se pasa un valor de búsqueda, se obtienen todas las películas o series de TV mediante DISCOVER
 
 const useSearchMovie = (trendmovie, genre) => {
-  const [movies, setMovies] = useState({
-    movies: [],
+  const [data, setData] = useState({
+    info: [],
     loading: true,
     error: null,
   });
-  const [isMovie, setIsMovie] = useState(
-    trendmovie === undefined ? true : trendmovie === true ? true : false
-  );
 
   const [search, setSearch] = useState();
   const [page, setPage] = useState(1); // Agregar el estado de paginación
@@ -19,13 +16,13 @@ const useSearchMovie = (trendmovie, genre) => {
 
   const fecthMovie = async (search, isMovie, page = 1) => {
     if (page === 1) {
-      setMovies({
-        movies: [],
+      setData({
+        info: [],
         loading: true,
         error: null,
       });
     } else {
-      setMovies((prevMovies) => ({
+      setData((prevMovies) => ({
         ...prevMovies,
         loading: true,
       }));
@@ -38,7 +35,7 @@ const useSearchMovie = (trendmovie, genre) => {
       let data;
 
       if (trendmovie !== undefined && (!search || search.length === 0)) {
-        // Si trendmovie es true o false, realiza la búsqueda de tendencias
+        // trendmovie tiene un valor true o false
         data = isMovie
           ? await getMoviesOrSeries(`trending/movie/day?page=${page}`)
           : await getMoviesOrSeries(`trending/tv/day?page=${page}`);
@@ -54,10 +51,9 @@ const useSearchMovie = (trendmovie, genre) => {
               )
             : await getMoviesOrSeries(`${type}/${movieOrTv}?page=${page}`);
       }
-
-      setMovies((prevMovies) => ({
-        movies:
-          page === 1 ? data.results : [...prevMovies.movies, ...data.results],
+      setData((prevMovies) => ({
+        info:
+          page === 1 ? data.results : [...prevMovies.info, ...data.results],
         loading: false,
         error: null,
       }));
@@ -66,8 +62,8 @@ const useSearchMovie = (trendmovie, genre) => {
         setHasMore(false); // Si ya no hay más resultados
       }
     } catch (error) {
-      setMovies({
-        movies: [],
+      setData({
+        info: [],
         loading: false,
         error: error,
       });
@@ -76,11 +72,9 @@ const useSearchMovie = (trendmovie, genre) => {
   };
 
   return {
-    movies,
-    isMovie,
+    data,
     search,
     setSearch,
-    setIsMovie,
     fecthMovie,
     hasMore, // Retornar el estado de hasMore
     page,
